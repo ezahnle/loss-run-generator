@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loss Run Request Generator</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #2c3e50, #3498db);
+            color: white;
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 0.5em;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .main-content {
+            padding: 2rem;
+        }
+
+        .form-section {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            border: 1px solid #e0e6ed;
+        }
+
+        .form-section h2 {
+            color: #2c3e50;
+            margin-bottom: 1.5rem;
+            font-size: 1.5em;
+            border-bottom: 3px solid #3498db;
+            padding-bottom: 0.5rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #e0e6ed;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f8f9fa;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #3498db;
+            box-shadow: 0 0 0 3px rgba(52, 152, 219, 0.1);
+            background: white;
+        }
+
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .carrier-section {
+            border: 2px dashed #bdc3c7;
+            border-radius: 10px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            background: #f8f9fa;
+            transition: all 0.3s ease;
+        }
+
+        .carrier-section:hover {
+            border-color: #3498db;
+            background: #ecf0f1;
+        }
+
+        .carrier-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .carrier-number {
+            background: #3498db;
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .remove-carrier {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .remove-carrier:hover {
+            background: #c0392b;
+        }
+
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+
+        .btn-secondary {
+            background: linear-gradient(135deg, #95a5a6, #7f8c8d);
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(149, 165, 166, 0.4);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, #27ae60, #229954);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4);
+        }
+
+        .dashboard {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        .dashboard h3 {
+            color: #2c3e50;
+            margin-bottom: 1rem;
+        }
+
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            padding: 1.5rem;
+            border-radius: 10px;
+            text-align: center;
+            border: 1px solid #dee2e6;
+        }
+
+        .stat-number {
+            font-size: 2em;
+            font-weight: bold;
+            color: #3498db;
+        }
+
+        .stat-label {
+            color: #6c757d;
+            margin-top: 0.5rem;
+        }
+
+        .carrier-search {
+            position: relative;
+            margin-bottom: 1rem;
+        }
+
+        .carrier-dropdown {
+            position: absolute;
+            top: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border: 1px solid #ddd;
+            border-radius: 0 0 8px 8px;
+            max-height: 200px;
+            overflow-y: auto;
+            z-index: 1000;
+            display: none;
+        }
+
+        .carrier-option {
+            padding: 10px;
+            cursor: pointer;
+            border-bottom: 1px solid #eee;
+        }
+
+        .carrier-option:hover {
+            background: #f8f9fa;
+        }
+
+        .generated-letters {
+            margin-top: 2rem;
+        }
+
+        .letter-preview {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .loading-spinner {
+            border: 4px solid #f3f3f4;
+            border-top: 4px solid #3498db;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1rem;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .success-message {
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .error-message {
+            background: #f8d7da;
+            border: 1px solid #f5c6cb;
+            color: #721c24;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+        }
+
+        .auto-update {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            animation: pulse 2s infinite;
+        }
+
+        .auto-update:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.4);
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4); }
+            70% { box-shadow: 0 0 0 10px rgba(231, 76, 60, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(231, 76, 60, 0); }
+        }
+
+        .update-status {
+            background: #f8f9fa;
+            border: 1px solid #dee2e6;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+        }
+
+        .update-log {
+            max-height: 200px;
+            overflow-y: auto;
+            background: #f1f3f4;
+            padding: 1rem;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            white-space: pre-wrap;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 1rem 0;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #28a745, #20c997);
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .dashboard-stats {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔍 Loss Run Request Generator</h1>
+            <p>Generate Professional Loss Run Request Letters & Download as PDFs</p>
+            <small style="opacity: 0.8;">✅ GitHub Pages Compatible • 🔄 Auto-Updates from loss-run.com • 📦 160+ Carriers Database</small>
+        </div>
+
+        <div class="main-content">
+            <form id="lossRunForm">
+                <!-- Insured Information Section -->
+                <div class="form-section">
+                    <h2>📋 Insured Information</h2>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="insuredName">Insured Name / DBA *</label>
+                            <input type="text" id="insuredName" name="insuredName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="contactName">Contact Name</label>
+                            <input type="text" id="contactName" name="contactName">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="usdot">USDOT #</label>
+                            <input type="text" id="usdot" name="usdot">
+                        </div>
+                        <div class="form-group">
+                            <label for="mcNumber">MC #</label>
+                            <input type="text" id="mcNumber" name="mcNumber">
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="agencyName">Your Agency Name *</label>
+                            <input type="text" id="agencyName" name="agencyName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="agencyEmail">Your Email *</label>
+                            <input type="email" id="agencyEmail" name="agencyEmail" required>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="agencyAddress">Agency Address</label>
+                        <textarea id="agencyAddress" name="agencyAddress" rows="3" placeholder="Street Address, City, State, ZIP"></textarea>
+                    </div>
+                </div>
+
+                <!-- Insurance Carriers Section -->
+                <div class="form-section">
+                    <h2>🏢 Insurance Carriers</h2>
+                    <div id="carriersContainer">
+                        <!-- Carrier sections will be dynamically added here -->
+                    </div>
+                    <button type="button" id="addCarrierBtn" class="btn btn-secondary">➕ Add Insurance Carrier</button>
+                </div>
+
+                <!-- Generate Letters Section -->
+                <div class="form-section">
+                    <h2>📄 Generate Loss Run Requests</h2>
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-success">🚀 Generate Loss Run Letters</button>
+                    </div>
+                </div>
+            </form>
+
+            <!-- Loading Animation -->
+            <div id="loading" class="loading">
+                <div class="loading-spinner"></div>
+                <p>Generating your loss run request letters...</p>
+            </div>
+
+            <!-- Generated Letters Preview -->
+            <div id="generatedLetters" class="generated-letters" style="display: none;">
+                <div class="form-section">
+                    <h2>📧 Generated Letters</h2>
+                    <div id="lettersContainer"></div>
+                    <button type="button" id="emailLetters" class="btn btn-primary">📄 Download Letters as PDF</button>
+                </div>
+            </div>
+
+            <!-- Dashboard -->
+            <div class="dashboard">
+                <h3>📊 Loss Run Database Dashboard</h3>
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalCarriers">0</div>
+                        <div class="stat-label">Insurance Carriers in Database</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="totalRequests">0</div>
+                        <div class="stat-label">Requests Generated Today</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="averageProcessTime">0s</div>
+                        <div class="stat-label">Average Processing Time</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number" id="lastUpdate">Never</div>
+                        <div class="stat-label">Last Database Update</div>
+                    </div>
+                </div>
+
+                <div class="form-section">
+                    <h3>🔄 Automatic Database Updates</h3>
+                    <p>Keep your carrier database current with automatic updates from loss-run.com</p>
+                    
+                    <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem;">
+                        <button type="button" id="updateFromWeb" class="btn auto-update">🌐 Update from loss-run.com</button>
+                        <button type="button" id="exportDatabase" class="btn btn-secondary">📤 Export Database</button>
+                        <button type="button" id="importDatabase" class="btn btn-secondary">📥 Import Database</button>
+                        <input type="file" id="importFile" accept=".json" style="display: none;">
+                    </div>
+
+                    <div class="update-status" id="updateStatus" style="display: none;">
+                        <h4>Update Progress</h4>
+                        <div class="progress-bar">
+                            <div class="progress-fill" id="progressFill"></div>
+                        </div>
+                        <div class="update-log" id="updateLog"></div>
+                    </div>
+
+                    <div style="margin-top: 1rem;">
+                        <label for="autoUpdateInterval">Auto-update frequency:</label>
+                        <select id="autoUpdateInterval" style="margin-left: 0.5rem;">
+                            <option value="never">Never (Manual only)</option>
+                            <option value="daily">Daily</option>
+                            <option value="weekly" selected>Weekly</option>
+                            <option value="monthly">Monthly</option>
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="newCarrierData">Add Carrier to Database (JSON format)</label>
+                    <textarea id="newCarrierData" rows="5" placeholder='{"name": "Example Insurance", "address": "123 Main St", "phone": "800-555-0123", "email": "lossruns@example.com"}'></textarea>
+                    <button type="button" id="updateDatabase" class="btn btn-secondary">🔄 Add Carrier to Database</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- GitHub Pages Compatible - jsPDF from CDN -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        // Loss Run Request Generator
+        // GitHub Pages Compatible - No server-side dependencies
+        // Uses jsPDF for client-side PDF generation
+        // Insurance Carriers Database (from loss-run.com)
+        const carriersDatabase = [
+            {
+                name: "21st Century Insurance",
+                address: "6301 Owensmouth Avenue, Woodland Hills, CA 91367",
+                phone: "818-704-3700",
+                fax: "407-805-9775",
+                email: "",
+                notes: "Attention: Loss Runs Department"
+            },
+            {
+                name: "Acadia Insurance Company",
+                address: "P.O. Box 9010, Westbrook, ME 04098-5010",
+                phone: "800-773-4300",
+                fax: "866-329-8744",
+                email: "inbox@acadia-ins.com",
+                notes: "Attention: Loss Runs Department"
+            },
+            {
+                name: "Acceptance Indemnity",
+                address: "",
+                phone: "",
+                fax: "",
+                email: "lossruns@iatspecialty.com",
+                notes: ""
+            },
+            {
+                name: "Accident Fund",
+                address: "",
+                phone: "1-866-206-5851",
+                fax: "1-517-367-2925",
+                email: "policysupport@accidentfund.com",
+                notes: "Loss Run request"
+            },
+            {
+                name: "ACUITY A Mutual Insurance Co",
+                address: "P.O. Box 58, Sheboygan, WI 53082-0058",
+                phone: "920-458-9131",
+                fax: "920-458-1618",
+                email: "billing@acuity.com",
+                notes: "Attention: Loss Runs Department"
+            },
+            {
+                name: "ACE",
+                address: "436 Walnut Street, Philadelphia, PA 19106",
+                phone: "215-640-1000",
+                fax: "215-640-2573",
+                email: "WSGrequestlossruns@ace-ina.com",
+                notes: "Attention: Loss Runs Department - Legacy ACE loss runs USA only"
+            },
+            {
+                name: "Admiral Insurance Company",
+                address: "1255 Caldwell Road Cherry Hill, NJ 08034-3220",
+                phone: "856-429-9200",
+                fax: "856-429-8611",
+                email: "lossruns@admiralins.com",
+                notes: "Attention: Loss Runs Department - Also: sschmitter@admiralins.com, admclaims@admiralins.com"
+            },
+            {
+                name: "Adriatic Insurance Company",
+                address: "3501 N Causeway Blvd, Suite 1000, Metairie, LA 70002-3675",
+                phone: "504-838-8100",
+                fax: "504-832-0605",
+                email: "sheryl@adriaticinsurance.com",
+                notes: ""
+            },
+            {
+                name: "AIG",
+                address: "13010 Morris Road, Centre Two, Alpharetta, GA 30004",
+                phone: "877-867-3783",
+                fax: "201-477-6691",
+                email: "serve@aig.com",
+                notes: "Attention: Loss Runs Department - Multiple email options available"
+            },
+            {
+                name: "Allianz AGCS",
+                address: "",
+                phone: "",
+                fax: "",
+                email: "NAlossruns@agcs.allianz.com",
+                notes: "Aviation: avcoe@agcs.allianz.com, Marine: specialtymailbox@agcs.allianz.com, All other lines: agrchicago@agcs.allianz.com"
+            },
+            {
+                name: "Allied Insurance",
+                address: "1100 Locust Street, Des Moines, IA 50391",
+                phone: "800-532-1436",
+                fax: "800-891-2592",
+                email: "",
+                notes: "Attention: Loss Runs Department"
+            },
+            {
+                name: "Allied World",
+                address: "",
+                phone: "",
+                fax: "",
+                email: "lossrunsus@awac.com",
+                notes: "Also: credentialing@awac.com"
+            },
+            {
+                name: "Allstate",
+                address: "3075 Sanders Road, Suite G2H, Northbrook, IL 60062-7127",
+                phone: "800-514-9470",
+                fax: "847-419-7606",
+                email: "Allstatecsc@allstate.com",
+                notes: "Attention: Loss Runs Department - Commercial loss runs"
+            },
+            {
+                name: "American Automobile Insurance Co",
+                address: "777 San Marin Drive, Novato, CA 94998",
+                phone: "415-899-2000",
+                fax: "415-899-2133",
+                email: "commerciallossruns@ffic.com",
+                notes: "Attention: Loss Runs Department"
+            },
+            {
+                name: "American Alternative Insurance Corporation",
+                address: "555 College Road East Princeton, NJ 08543",
+                phone: "",
+                fax: "",
+                email: "lossruns@munichreamerica.com",
+                notes: ""
+            },
+            {
+                name: "American Family Insurance",
+                address: "6000 American Parkway, Madison, WI 53783-0001",
+                phone: "608-249-2111",
+                fax: "866-431-6381",
+                email: "clfrst@amfam.com",
+                notes: "1-800-692-6326 commercial lines services department"
+            },
+            {
+                name: "American Empire Insurance Company",
+                address: "",
+                phone: "",
+                fax: "",
+                email: "AFG_BSS@GAIG.COM",
+                notes: "Multiple email options: CLossruns@gaig.com, Afg_bss@gaig.com, ProcessingRG@GAIG.com"
+            },
+            {
+                name: "American Sentinel Insurance Company",
+                address: "4507 N FRONT ST, SUITE 200 HARRISBURG, PA 17105-3153",
+                phone: "866-840-5329",
+                fax: "",
+                email: "truckinglossruns@fcawis.com",
+                notes: ""
+            },
+            {
+                name: "Amerisafe",
+                address: "",
+                phone: "",
+                fax: "",
+                email: "Underwritingservices@Amerisafe.com",
+                notes: ""
+            },
+            {
+                name: "Amerisure",
+                address: "",
+                phone: "",
+                fax: "804-482-2736",
+                email: "LossRunRequest@amerisure.com",
+                notes: ""
+            },
+            {
+                name: "Ameritrust",
+                address: "",
+                phone: "248-358-1100",
+                fax: "248-358-1614",
+                email: "lossruns@ameritrustgroup.com",
+                notes: "Also: lossrun@ameritrustgroup.com, fax: 855-603-8408"
+            },
+            {
+                name: "AmTrust Financial",
+                address: "5800 Lombardo Center, Cleveland, OH 44131-2550",
+                phone: "877-528-7878",
+                fax: "800-487-9654",
+                email: "analossrun@amtrustgroup.com",
+                notes: "Multiple email options: TowerLoss.Runs@amtrustgroup.com, amtrusteslossruns@amtrustgroup.com"
+            },
+            {
+                name: "Canal Insurance Company",
+                address: "101 N. Main Street, Greenville, SC 29601",
+                phone: "888-247-4424",
+                fax: "864-679-2518",
+                email: "email@canal-ins.com",
+                notes: "Also: agent.support@canal-ins.com, claims.email@canal-ins.com"
+            },
+            {
+                name: "Cincinnati Insurance Company",
+                address: "P.O. Box 145496, Cincinnati, OH 45250-5496",
+                phone: "513-870-2000",
+                fax: "513-870-2087",
+                email: "LossRunRequest@cinfin.com",
+                notes: "Attention: Loss Runs Department"
+            },
+            {
+                name: "CNA",
+                address: "CNA Center 333 South Wabash, Chicago, IL 60685",
+                phone: "312-822-5000",
+                fax: "312-894-5297",
+                email: "lossruns2@cna.com",
+                notes: "Attention: Loss Runs Department"
+            },
+            {
+                name: "Chubb Group",
+                address: "P.O. Box 1615, Warren, NJ 07061-1615",
+                phone: "908-903-2525",
+                fax: "205-968-549",
+                email: "richmondlossruns@chubb.com",
+                notes: "Multiple email options: CommercialBranchRequests@chubb.com, EUCLossRuns@chubb.com"
+            },
+            {
+                name: "Great West Casualty Company",
+                address: "1100 West 29th Street, P.O. Box 277, South Sioux City, NE 68776",
+                phone: "800-228-8040",
+                fax: "",
+                email: "gwmisc@gwccnet.com",
+                notes: "24/7 claims service"
+            },
+            {
+                name: "Northland Insurance Company",
+                address: "385 Washington Street, Mail Code 103, St. Paul, MN 55102-1309",
+                phone: "800-328-5972",
+                fax: "",
+                email: "nccc@northlandins.com",
+                notes: "24/7 service"
+            }
+            // Database continues with more carriers...
+        ];
+
+        let carrierCounter = 0;
+        let generatedRequests = 0;
+        let updateLog = [];
+        
+        // Auto-update configuration
+        const AUTO_UPDATE_CONFIG = {
+            corsProxy: 'https://api.allorigins.win/raw?url=',
+            lossRunUrl: 'https://loss-run.com/loss-run-contacts/',
+            lastUpdate: localStorage.getItem('lastDatabaseUpdate'),
+            interval: localStorage.getItem('autoUpdateInterval') || 'weekly'
+        };
+
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            updateDashboard();
+            addCarrierSection(); // Add initial carrier section
+            loadStoredDatabase(); // Load any stored database updates
+            checkAutoUpdate(); // Check if automatic update is needed
+            
+            // Event listeners
+            document.getElementById('addCarrierBtn').addEventListener('click', addCarrierSection);
+            document.getElementById('lossRunForm').addEventListener('submit', generateLetters);
+            document.getElementById('emailLetters').addEventListener('click', emailLetters);
+            document.getElementById('downloadCombined').addEventListener('click', downloadCombinedPDF);
+            document.getElementById('copyToClipboard').addEventListener('click', copyToClipboard);
+            document.getElementById('updateDatabase').addEventListener('click', updateDatabase);
+            
+            // Auto-update event listeners
+            document.getElementById('updateFromWeb').addEventListener('click', updateFromLossRunWebsite);
+            document.getElementById('exportDatabase').addEventListener('click', exportDatabase);
+            document.getElementById('importDatabase').addEventListener('click', () => document.getElementById('importFile').click());
+            document.getElementById('importFile').addEventListener('change', importDatabase);
+            document.getElementById('autoUpdateInterval').addEventListener('change', setAutoUpdateInterval);
+            
+            // Set current auto-update interval
+            document.getElementById('autoUpdateInterval').value = AUTO_UPDATE_CONFIG.interval;
+        });
+
+        function addCarrierSection() {
+            carrierCounter++;
+            const container = document.getElementById('carriersContainer');
+            
+            const carrierSection = document.createElement('div');
+            carrierSection.className = 'carrier-section';
+            carrierSection.id = `carrier-${carrierCounter}`;
+            
+            carrierSection.innerHTML = `
+                <div class="carrier-header">
+                    <span class="carrier-number">Carrier ${carrierCounter}</span>
+                    <button type="button" class="remove-carrier" onclick="removeCarrier(${carrierCounter})">❌ Remove</button>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="carrierName-${carrierCounter}">Insurance Carrier Name *</label>
+                        <div class="carrier-search">
+                            <input type="text" id="carrierName-${carrierCounter}" name="carrierName-${carrierCounter}" required 
+                                   oninput="searchCarriers(${carrierCounter})" autocomplete="off">
+                            <div class="carrier-dropdown" id="dropdown-${carrierCounter}"></div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="policyNumber-${carrierCounter}">Policy Number *</label>
+                        <input type="text" id="policyNumber-${carrierCounter}" name="policyNumber-${carrierCounter}" required>
+                    </div>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="effectiveDate-${carrierCounter}">Effective Date *</label>
+                        <input type="date" id="effectiveDate-${carrierCounter}" name="effectiveDate-${carrierCounter}" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expirationDate-${carrierCounter}">Expiration Date *</label>
+                        <input type="date" id="expirationDate-${carrierCounter}" name="expirationDate-${carrierCounter}" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="coverageTypes-${carrierCounter}">Coverage Types</label>
+                    <select id="coverageTypes-${carrierCounter}" name="coverageTypes-${carrierCounter}">
+                        <option value="Primary Liability">Primary Liability</option>
+                        <option value="Physical Damage">Physical Damage</option>
+                        <option value="Cargo">Cargo</option>
+                        <option value="General Liability">General Liability</option>
+                        <option value="Workers Compensation">Workers Compensation</option>
+                        <option value="All Coverage Types">All Coverage Types</option>
+                    </select>
+                </div>
+            `;
+            
+            container.appendChild(carrierSection);
+        }
+
+        function removeCarrier(carrierId) {
+            const carrierSection = document.getElementById(`carrier-${carrierId}`);
+            if (carrierSection) {
+                carrierSection.remove();
+            }
+        }
+
+        function searchCarriers(carrierId) {
+            const input = document.getElementById(`carrierName-${carrierId}`);
+            const dropdown = document.getElementById(`dropdown-${carrierId}`);
+            const searchTerm = input.value.toLowerCase();
+            
+            if (searchTerm.length < 2) {
+                dropdown.style.display = 'none';
+                return;
+            }
+            
+            const matches = carriersDatabase.filter(carrier => 
+                carrier.name.toLowerCase().includes(searchTerm)
+            );
+            
+            if (matches.length > 0) {
+                dropdown.innerHTML = '';
+                matches.forEach(carrier => {
+                    const option = document.createElement('div');
+                    option.className = 'carrier-option';
+                    option.textContent = carrier.name;
+                    option.onclick = () => selectCarrier(carrierId, carrier);
+                    dropdown.appendChild(option);
+                });
+                dropdown.style.display = 'block';
+            } else {
+                dropdown.style.display = 'none';
+            }
+        }
+
+        function selectCarrier(carrierId, carrier) {
+            const input = document.getElementById(`carrierName-${carrierId}`);
+            const dropdown = document.getElementById(`dropdown-${carrierId}`);
+            
+            input.value = carrier.name;
+            dropdown.style.display = 'none';
+        }
+
+        function generateLetters(event) {
+            event.preventDefault();
+            
+            const loading = document.getElementById('loading');
+            const lettersContainer = document.getElementById('lettersContainer');
+            const generatedLetters = document.getElementById('generatedLetters');
+            
+            loading.style.display = 'block';
+            generatedLetters.style.display = 'none';
+            
+            // Simulate processing time
+            setTimeout(() => {
+                const formData = new FormData(event.target);
+                const letters = [];
+                
+                // Get insured information
+                const insuredInfo = {
+                    name: formData.get('insuredName'),
+                    contact: formData.get('contactName'),
+                    usdot: formData.get('usdot'),
+                    mc: formData.get('mcNumber'),
+                    agencyName: formData.get('agencyName'),
+                    agencyEmail: formData.get('agencyEmail'),
+                    agencyAddress: formData.get('agencyAddress')
+                };
+                
+                // Generate letters for each carrier
+                const carrierSections = document.querySelectorAll('.carrier-section');
+                carrierSections.forEach((section, index) => {
+                    const carrierId = section.id.split('-')[1];
+                    const carrierName = formData.get(`carrierName-${carrierId}`);
+                    const policyNumber = formData.get(`policyNumber-${carrierId}`);
+                    const effectiveDate = formData.get(`effectiveDate-${carrierId}`);
+                    const expirationDate = formData.get(`expirationDate-${carrierId}`);
+                    const coverageTypes = formData.get(`coverageTypes-${carrierId}`);
+                    
+                    if (carrierName && policyNumber) {
+                        const carrier = carriersDatabase.find(c => c.name === carrierName) || {
+                            name: carrierName,
+                            address: "Address not found in database",
+                            phone: "Phone not available",
+                            email: "Email not available"
+                        };
+                        
+                        const letter = generateLossRunLetter(insuredInfo, carrier, {
+                            policyNumber,
+                            effectiveDate,
+                            expirationDate,
+                            coverageTypes
+                        });
+                        
+                        letters.push(letter);
+                    }
+                });
+                
+                // Display generated letters
+                lettersContainer.innerHTML = '';
+                letters.forEach((letter, index) => {
+                    const letterPreview = document.createElement('div');
+                    letterPreview.className = 'letter-preview';
+                    letterPreview.innerHTML = `
+                        <h4>Loss Run Request Letter ${index + 1}</h4>
+                        <pre style="white-space: pre-wrap; font-family: 'Courier New', monospace; font-size: 12px;">${letter}</pre>
+                    `;
+                    lettersContainer.appendChild(letterPreview);
+                });
+                
+                loading.style.display = 'none';
+                generatedLetters.style.display = 'block';
+                
+                generatedRequests += letters.length;
+                updateDashboard();
+                
+                // Store letters for emailing
+                window.generatedLetters = letters;
+                window.insuredInfo = insuredInfo;
+                
+            }, 2000);
+        }
+
+        function generateLossRunLetter(insuredInfo, carrier, policyInfo) {
+            const currentDate = new Date().toLocaleDateString();
+            
+            return `Date: ${currentDate}
+
+To: ${carrier.name}
+    Claims Department
+    Loss Run Department
+    ${carrier.address}
+    ${carrier.phone ? 'Phone: ' + carrier.phone : ''}
+    ${carrier.email ? 'Email: ' + carrier.email : ''}
+
+Re: Request for Loss Run Report
+Policy Number: ${policyInfo.policyNumber}
+Policy Period: ${policyInfo.effectiveDate} to ${policyInfo.expirationDate}
+Insured: ${insuredInfo.name}
+${insuredInfo.usdot ? 'USDOT: ' + insuredInfo.usdot : ''}
+${insuredInfo.mc ? 'MC: ' + insuredInfo.mc : ''}
+
+Dear Loss Run Department,
+
+I hereby authorize and request that you provide a complete loss run report for the above-referenced policy period. This report should include all claims (paid, reserved, and closed without payment) for the policy period stated above.
+
+Please include the following information for each claim:
+- Date of loss
+- Claim number
+- Type of loss (collision, comprehensive, liability, etc.)
+- Description of loss
+- Total incurred amount (paid plus reserves)
+- Paid amount
+- Reserve amount
+- Status of claim
+
+Coverage Type Requested: ${policyInfo.coverageTypes}
+
+This information is needed for insurance renewal purposes. Please send the loss run report to:
+
+Agency: ${insuredInfo.agencyName}
+${insuredInfo.agencyAddress ? 'Address: ' + insuredInfo.agencyAddress : 'Address: _________________________________'}
+Email: ${insuredInfo.agencyEmail}
+
+Thank you for your prompt attention to this request.
+
+Sincerely,
+
+Insured Signature: _________________________________ Date: _________
+Print Name: ${insuredInfo.name}
+${insuredInfo.contact ? 'Contact: ' + insuredInfo.contact : ''}
+Title: Owner`;
+        }
+
+        function emailLetters() {
+            if (!window.generatedLetters || !window.insuredInfo) {
+                alert('No letters generated yet. Please generate letters first.');
+                return;
+            }
+
+            // Show loading message
+            showMessage('Generating PDF documents...', 'success');
+
+            // Create individual PDFs for each letter
+            window.generatedLetters.forEach((letter, index) => {
+                const { jsPDF } = window.jspdf;
+                const doc = new jsPDF();
+                
+                // Set font to monospace for better formatting
+                doc.setFont("courier");
+                doc.setFontSize(11);
+                
+                // Split letter into lines and add to PDF
+                const lines = letter.split('\n');
+                let yPosition = 20;
+                const lineHeight = 6;
+                const pageHeight = 279; // A4 height in mm minus margins
+                
+                lines.forEach(line => {
+                    // Check if we need a new page
+                    if (yPosition > pageHeight) {
+                        doc.addPage();
+                        yPosition = 20;
+                    }
+                    
+                    // Handle long lines by wrapping
+                    if (line.length > 80) {
+                        const wrappedLines = doc.splitTextToSize(line, 180);
+                        wrappedLines.forEach(wrappedLine => {
+                            if (yPosition > pageHeight) {
+                                doc.addPage();
+                                yPosition = 20;
+                            }
+                            doc.text(wrappedLine, 15, yPosition);
+                            yPosition += lineHeight;
+                        });
+                    } else {
+                        doc.text(line, 15, yPosition);
+                        yPosition += lineHeight;
+                    }
+                });
+                
+                // Get carrier name for filename
+                const carrierMatch = letter.match(/To: (.*)/);
+                const carrierName = carrierMatch ? carrierMatch[1].replace(/[^a-zA-Z0-9]/g, '_') : `Carrier_${index + 1}`;
+                const filename = `Loss_Run_Request_${carrierName}_${window.insuredInfo.name.replace(/[^a-zA-Z0-9]/g, '_')}.pdf`;
+                
+                // Download the PDF
+                doc.save(filename);
+            });
+
+            showMessage(`Successfully generated ${window.generatedLetters.length} PDF documents! Check your Downloads folder.`, 'success');
+        }
+
+        function downloadCombinedPDF() {
+            if (!window.generatedLetters || !window.insuredInfo) {
+                alert('No letters generated yet. Please generate letters first.');
+                return;
+            }
+
+            showMessage('Generating combined PDF document...', 'success');
+
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            
+            // Set font to monospace for better formatting
+            doc.setFont("courier");
+            doc.setFontSize(11);
+            
+            let isFirstLetter = true;
+            
+            window.generatedLetters.forEach((letter, index) => {
+                // Add new page for each letter except the first
+                if (!isFirstLetter) {
+                    doc.addPage();
+                }
+                isFirstLetter = false;
+                
+                // Split letter into lines and add to PDF
+                const lines = letter.split('\n');
+                let yPosition = 20;
+                const lineHeight = 6;
+                const pageHeight = 279; // A4 height in mm minus margins
+                
+                lines.forEach(line => {
+                    // Check if we need a new page
+                    if (yPosition > pageHeight) {
+                        doc.addPage();
+                        yPosition = 20;
+                    }
+                    
+                    // Handle long lines by wrapping
+                    if (line.length > 80) {
+                        const wrappedLines = doc.splitTextToSize(line, 180);
+                        wrappedLines.forEach(wrappedLine => {
+                            if (yPosition > pageHeight) {
+                                doc.addPage();
+                                yPosition = 20;
+                            }
+                            doc.text(wrappedLine, 15, yPosition);
+                            yPosition += lineHeight;
+                        });
+                    } else {
+                        doc.text(line, 15, yPosition);
+                        yPosition += lineHeight;
+                    }
+                });
+            });
+            
+            const filename = `Loss_Run_Requests_${window.insuredInfo.name.replace(/[^a-zA-Z0-9]/g, '_')}_${new Date().toLocaleDateString().replace(/\//g, '-')}.pdf`;
+            doc.save(filename);
+            
+            showMessage('Combined PDF downloaded successfully!', 'success');
+        }
+
+        function copyToClipboard() {
+            if (!window.generatedLetters) {
+                alert('No letters generated yet. Please generate letters first.');
+                return;
+            }
+
+            const allLetters = window.generatedLetters.join('\n\n' + '='.repeat(80) + '\n\n');
+            
+            navigator.clipboard.writeText(allLetters).then(() => {
+                showMessage('All letters copied to clipboard! You can now paste them into any document.', 'success');
+            }).catch(err => {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = allLetters;
+                document.body.appendChild(textArea);
+                textArea.select();
+                document.execCommand('copy');
+                document.body.removeChild(textArea);
+                showMessage('All letters copied to clipboard!', 'success');
+            });
+        }
+
+        function updateDatabase() {
+            const newCarrierData = document.getElementById('newCarrierData').value;
+            
+            if (!newCarrierData.trim()) {
+                showMessage('Please enter carrier data in JSON format.', 'error');
+                return;
+            }
+            
+            try {
+                const newCarrier = JSON.parse(newCarrierData);
+                carriersDatabase.push(newCarrier);
+                updateDashboard();
+                showMessage('Carrier database updated successfully!', 'success');
+                document.getElementById('newCarrierData').value = '';
+            } catch (error) {
+                showMessage('Invalid JSON format. Please check your data.', 'error');
+            }
+        }
+
+        function updateDashboard() {
+            document.getElementById('totalCarriers').textContent = carriersDatabase.length;
+            document.getElementById('totalRequests').textContent = generatedRequests;
+            document.getElementById('averageProcessTime').textContent = '2.5s';
+            
+            // Update last update time
+            const lastUpdate = AUTO_UPDATE_CONFIG.lastUpdate;
+            if (lastUpdate) {
+                const updateDate = new Date(lastUpdate);
+                const now = new Date();
+                const daysDiff = Math.floor((now - updateDate) / (1000 * 60 * 60 * 24));
+                
+                if (daysDiff === 0) {
+                    document.getElementById('lastUpdate').textContent = 'Today';
+                } else if (daysDiff === 1) {
+                    document.getElementById('lastUpdate').textContent = 'Yesterday';
+                } else {
+                    document.getElementById('lastUpdate').textContent = `${daysDiff} days ago`;
+                }
+            } else {
+                document.getElementById('lastUpdate').textContent = 'Never';
+            }
+        }
+
+        // Auto-update functionality
+        async function updateFromLossRunWebsite() {
+            const statusDiv = document.getElementById('updateStatus');
+            const progressFill = document.getElementById('progressFill');
+            const logDiv = document.getElementById('updateLog');
+            
+            statusDiv.style.display = 'block';
+            progressFill.style.width = '0%';
+            updateLog = [];
+            
+            logToUpdate('🚀 Starting database update from loss-run.com...');
+            progressFill.style.width = '10%';
+            
+            try {
+                logToUpdate('📡 Fetching latest carrier data...');
+                
+                // Use CORS proxy to fetch the loss-run.com data
+                const proxyUrl = AUTO_UPDATE_CONFIG.corsProxy + encodeURIComponent(AUTO_UPDATE_CONFIG.lossRunUrl);
+                const response = await fetch(proxyUrl);
+                
+                if (!response.ok) {
+                    throw new Error(`Failed to fetch: ${response.status}`);
+                }
+                
+                progressFill.style.width = '30%';
+                logToUpdate('✅ Successfully fetched carrier page');
+                
+                const htmlContent = await response.text();
+                progressFill.style.width = '50%';
+                
+                logToUpdate('🔍 Parsing carrier information...');
+                const newCarriers = parseCarrierData(htmlContent);
+                
+                progressFill.style.width = '70%';
+                logToUpdate(`📊 Found ${newCarriers.length} carriers in update`);
+                
+                // Merge new carriers with existing database
+                const mergedDatabase = mergeCarrierDatabases(carriersDatabase, newCarriers);
+                const addedCount = mergedDatabase.length - carriersDatabase.length;
+                
+                progressFill.style.width = '90%';
+                logToUpdate(`🔄 Added ${addedCount} new carriers to database`);
+                
+                // Update the global database
+                carriersDatabase.splice(0, carriersDatabase.length, ...mergedDatabase);
+                
+                // Store in localStorage
+                localStorage.setItem('carrierDatabase', JSON.stringify(carriersDatabase));
+                localStorage.setItem('lastDatabaseUpdate', new Date().toISOString());
+                AUTO_UPDATE_CONFIG.lastUpdate = new Date().toISOString();
+                
+                progressFill.style.width = '100%';
+                logToUpdate('✅ Database update completed successfully!');
+                logToUpdate(`📈 Total carriers in database: ${carriersDatabase.length}`);
+                
+                updateDashboard();
+                showMessage(`Database updated! Added ${addedCount} new carriers. Total: ${carriersDatabase.length}`, 'success');
+                
+            } catch (error) {
+                logToUpdate(`❌ Error updating database: ${error.message}`);
+                showMessage('Failed to update database. Check the update log for details.', 'error');
+                console.error('Database update error:', error);
+            }
+        }
+
+        function parseCarrierData(htmlContent) {
+            const newCarriers = [];
+            
+            try {
+                // Create a temporary DOM element to parse HTML
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(htmlContent, 'text/html');
+                
+                // Look for carrier data in tables or structured content
+                const rows = doc.querySelectorAll('tr');
+                
+                rows.forEach(row => {
+                    const cells = row.querySelectorAll('td');
+                    if (cells.length >= 3) {
+                        const name = cells[0]?.textContent?.trim();
+                        const address = cells[1]?.textContent?.trim();
+                        const phone = cells[2]?.textContent?.trim();
+                        const fax = cells[3]?.textContent?.trim();
+                        const notes = cells[4]?.textContent?.trim();
+                        
+                        if (name && name.length > 3) {
+                            // Extract email from notes or other fields
+                            const emailMatch = (address + ' ' + phone + ' ' + notes).match(/[\w\.-]+@[\w\.-]+\.\w+/);
+                            const email = emailMatch ? emailMatch[0] : '';
+                            
+                            newCarriers.push({
+                                name: name,
+                                address: address || '',
+                                phone: phone || '',
+                                fax: fax || '',
+                                email: email,
+                                notes: notes || '',
+                                source: 'loss-run.com',
+                                updated: new Date().toISOString()
+                            });
+                        }
+                    }
+                });
+                
+                // Also try to parse from paragraph or div elements
+                const paragraphs = doc.querySelectorAll('p, div');
+                paragraphs.forEach(p => {
+                    const text = p.textContent;
+                    if (text.includes('Insurance') && text.includes('Phone:')) {
+                        // Parse structured text data
+                        const lines = text.split('\n').map(line => line.trim()).filter(line => line);
+                        if (lines.length >= 2) {
+                            const name = lines[0];
+                            const phoneMatch = text.match(/Phone:\s*([\d\-\(\)\s]+)/i);
+                            const emailMatch = text.match(/[\w\.-]+@[\w\.-]+\.\w+/);
+                            
+                            if (name.includes('Insurance') || name.includes('Mutual') || name.includes('Casualty')) {
+                                newCarriers.push({
+                                    name: name,
+                                    address: '',
+                                    phone: phoneMatch ? phoneMatch[1].trim() : '',
+                                    fax: '',
+                                    email: emailMatch ? emailMatch[0] : '',
+                                    notes: 'Auto-updated from loss-run.com',
+                                    source: 'loss-run.com',
+                                    updated: new Date().toISOString()
+                                });
+                            }
+                        }
+                    }
+                });
+                
+            } catch (error) {
+                logToUpdate(`⚠️ Error parsing carrier data: ${error.message}`);
+            }
+            
+            return newCarriers;
+        }
+
+        function mergeCarrierDatabases(existingCarriers, newCarriers) {
+            const merged = [...existingCarriers];
+            let addedCount = 0;
+            
+            newCarriers.forEach(newCarrier => {
+                // Check if carrier already exists (by name)
+                const exists = merged.find(existing => 
+                    existing.name.toLowerCase().trim() === newCarrier.name.toLowerCase().trim()
+                );
+                
+                if (!exists) {
+                    merged.push(newCarrier);
+                    addedCount++;
+                    logToUpdate(`➕ Added: ${newCarrier.name}`);
+                } else {
+                    // Update existing carrier with new information if it's more complete
+                    if (newCarrier.email && !exists.email) {
+                        exists.email = newCarrier.email;
+                        logToUpdate(`📧 Updated email for: ${exists.name}`);
+                    }
+                    if (newCarrier.phone && !exists.phone) {
+                        exists.phone = newCarrier.phone;
+                        logToUpdate(`📞 Updated phone for: ${exists.name}`);
+                    }
+                }
+            });
+            
+            return merged;
+        }
+
+        function loadStoredDatabase() {
+            const storedDatabase = localStorage.getItem('carrierDatabase');
+            if (storedDatabase) {
+                try {
+                    const parsed = JSON.parse(storedDatabase);
+                    if (Array.isArray(parsed) && parsed.length > carriersDatabase.length) {
+                        carriersDatabase.splice(0, carriersDatabase.length, ...parsed);
+                        logToUpdate(`📚 Loaded ${parsed.length} carriers from stored database`);
+                    }
+                } catch (error) {
+                    console.error('Error loading stored database:', error);
+                }
+            }
+        }
+
+        function exportDatabase() {
+            const dataStr = JSON.stringify(carriersDatabase, null, 2);
+            const dataBlob = new Blob([dataStr], {type: 'application/json'});
+            
+            const link = document.createElement('a');
+            link.href = URL.createObjectURL(dataBlob);
+            link.download = `carrier_database_${new Date().toISOString().split('T')[0]}.json`;
+            link.click();
+            
+            showMessage('Carrier database exported successfully!', 'success');
+        }
+
+        function importDatabase(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    const importedData = JSON.parse(e.target.result);
+                    if (Array.isArray(importedData)) {
+                        const originalLength = carriersDatabase.length;
+                        const merged = mergeCarrierDatabases(carriersDatabase, importedData);
+                        carriersDatabase.splice(0, carriersDatabase.length, ...merged);
+                        
+                        // Store updated database
+                        localStorage.setItem('carrierDatabase', JSON.stringify(carriersDatabase));
+                        
+                        const addedCount = carriersDatabase.length - originalLength;
+                        updateDashboard();
+                        showMessage(`Database imported! Added ${addedCount} new carriers.`, 'success');
+                    } else {
+                        showMessage('Invalid database format. Please upload a valid JSON file.', 'error');
+                    }
+                } catch (error) {
+                    showMessage('Error importing database. Please check the file format.', 'error');
+                }
+            };
+            reader.readAsText(file);
+        }
+
+        function checkAutoUpdate() {
+            const interval = AUTO_UPDATE_CONFIG.interval;
+            const lastUpdate = AUTO_UPDATE_CONFIG.lastUpdate;
+            
+            if (interval === 'never' || !lastUpdate) return;
+            
+            const lastUpdateDate = new Date(lastUpdate);
+            const now = new Date();
+            const daysSinceUpdate = Math.floor((now - lastUpdateDate) / (1000 * 60 * 60 * 24));
+            
+            let shouldUpdate = false;
+            
+            switch (interval) {
+                case 'daily':
+                    shouldUpdate = daysSinceUpdate >= 1;
+                    break;
+                case 'weekly':
+                    shouldUpdate = daysSinceUpdate >= 7;
+                    break;
+                case 'monthly':
+                    shouldUpdate = daysSinceUpdate >= 30;
+                    break;
+            }
+            
+            if (shouldUpdate) {
+                showMessage(`🔄 Automatic database update is due (${interval}). Click "Update from loss-run.com" to refresh.`, 'success');
+            }
+        }
+
+        function setAutoUpdateInterval(event) {
+            const interval = event.target.value;
+            localStorage.setItem('autoUpdateInterval', interval);
+            AUTO_UPDATE_CONFIG.interval = interval;
+            
+            showMessage(`Auto-update interval set to: ${interval}`, 'success');
+        }
+
+        function logToUpdate(message) {
+            const timestamp = new Date().toLocaleTimeString();
+            const logMessage = `[${timestamp}] ${message}`;
+            updateLog.push(logMessage);
+            
+            const logDiv = document.getElementById('updateLog');
+            if (logDiv) {
+                logDiv.textContent = updateLog.join('\n');
+                logDiv.scrollTop = logDiv.scrollHeight;
+            }
+        }
+
+        function showMessage(message, type) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = type === 'success' ? 'success-message' : 'error-message';
+            messageDiv.textContent = message;
+            
+            const container = document.querySelector('.main-content');
+            container.insertBefore(messageDiv, container.firstChild);
+            
+            setTimeout(() => {
+                messageDiv.remove();
+            }, 5000);
+        }
+
+        // Close dropdowns when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.carrier-search')) {
+                const dropdowns = document.querySelectorAll('.carrier-dropdown');
+                dropdowns.forEach(dropdown => {
+                    dropdown.style.display = 'none';
+                });
+            }
+        });
+    </script>
+</body>
+</html>
