@@ -239,20 +239,39 @@
             background: white;
             border: 1px solid #ddd;
             border-radius: 0 0 8px 8px;
-            max-height: 200px;
+            max-height: 300px;
             overflow-y: auto;
             z-index: 1000;
             display: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         }
 
         .carrier-option {
-            padding: 10px;
+            padding: 12px;
             cursor: pointer;
             border-bottom: 1px solid #eee;
+            transition: background-color 0.2s ease;
         }
 
         .carrier-option:hover {
             background: #f8f9fa;
+        }
+
+        .carrier-option:last-child {
+            border-bottom: none;
+        }
+
+        .carrier-option strong {
+            color: #2c3e50;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .carrier-option small {
+            color: #6c757d;
+            font-size: 11px;
+            display: block;
+            margin-top: 2px;
         }
 
         .generated-letters {
@@ -389,7 +408,7 @@
         <div class="header">
             <h1>🔍 Loss Run Request Generator</h1>
             <p>Generate Professional Loss Run Request Letters & Download as PDFs</p>
-            <small style="opacity: 0.8;">✅ GitHub Pages Compatible • 🔄 Auto-Updates from loss-run.com • 📦 160+ Carriers Database</small>
+            <small style="opacity: 0.8;">✅ GitHub Pages Compatible • 🔄 Auto-Updates from loss-run.com • 📦 190+ Carriers Database • 🔍 Smart Auto-Complete</small>
         </div>
 
         <div class="main-content">
@@ -436,6 +455,9 @@
                 <!-- Insurance Carriers Section -->
                 <div class="form-section">
                     <h2>🏢 Insurance Carriers</h2>
+                    <p style="margin-bottom: 1.5rem; color: #6c757d; font-style: italic;">
+                        💡 <strong>Tip:</strong> Start typing any carrier name (like "Progressive", "State Farm", "Allstate") and select from the dropdown. Our database includes 190+ carriers with contact information.
+                    </p>
                     <div id="carriersContainer">
                         <!-- Carrier sections will be dynamically added here -->
                     </div>
@@ -542,6 +564,272 @@
                 fax: "407-805-9775",
                 email: "",
                 notes: "Attention: Loss Runs Department"
+            },
+            // MAJOR CARRIERS - High Priority
+            {
+                name: "Progressive",
+                address: "6300 Wilson Mills Road, Mayfield Village, OH 44143",
+                phone: "800-274-4499",
+                fax: "",
+                email: "",
+                notes: "Major auto and commercial insurance carrier"
+            },
+            {
+                name: "Progressive Commercial",
+                address: "6300 Wilson Mills Road, Mayfield Village, OH 44143",
+                phone: "800-274-4499",
+                fax: "",
+                email: "",
+                notes: "Commercial trucking division"
+            },
+            {
+                name: "State Farm",
+                address: "One State Farm Plaza, Bloomington, IL 61710",
+                phone: "309-766-2311",
+                fax: "",
+                email: "",
+                notes: "Major insurance carrier"
+            },
+            {
+                name: "GEICO",
+                address: "One GEICO Plaza, Washington, DC 20076",
+                phone: "800-841-3000",
+                fax: "",
+                email: "",
+                notes: "Major auto insurance carrier"
+            },
+            {
+                name: "Liberty Mutual",
+                address: "175 Berkeley Street, Boston, MA 02116",
+                phone: "800-290-8711",
+                fax: "",
+                email: "",
+                notes: "Major commercial insurance carrier"
+            },
+            {
+                name: "Farmers Insurance",
+                address: "4680 Wilshire Blvd, Los Angeles, CA 90010",
+                phone: "888-327-6335",
+                fax: "",
+                email: "",
+                notes: "Major insurance carrier"
+            },
+            {
+                name: "Travelers",
+                address: "One Tower Square, Hartford, CT 06183",
+                phone: "800-238-6225",
+                fax: "",
+                email: "",
+                notes: "Major commercial insurance carrier"
+            },
+            {
+                name: "Nationwide",
+                address: "One Nationwide Plaza, Columbus, OH 43215",
+                phone: "877-669-6877",
+                fax: "",
+                email: "",
+                notes: "Major insurance carrier"
+            },
+            {
+                name: "USAA",
+                address: "9800 Fredericksburg Road, San Antonio, TX 78288",
+                phone: "800-531-8722",
+                fax: "",
+                email: "",
+                notes: "Military-focused insurance carrier"
+            },
+            {
+                name: "Zurich",
+                address: "1299 Zurich Way, Schaumburg, IL 60196",
+                phone: "800-987-3373",
+                fax: "402-963-5329",
+                email: "",
+                notes: "Major commercial insurance carrier"
+            },
+            // From your agency Excel file - Claims contacts
+            {
+                name: "Altamont",
+                address: "",
+                phone: "209-425-5118",
+                fax: "",
+                email: "aschultz@altamontbrokerage.com",
+                notes: "From agency claims list"
+            },
+            {
+                name: "American Team Managers/Global Claims Service LLC",
+                address: "",
+                phone: "1-866-427-4869",
+                fax: "919-516-0660",
+                email: "",
+                notes: "Alternative phone: 919-745-8177"
+            },
+            {
+                name: "Amwins/Scottsdale",
+                address: "",
+                phone: "800-423-7675",
+                fax: "480-483-6752",
+                email: "",
+                notes: "From agency claims list"
+            },
+            {
+                name: "Bellingham/National Claims Management",
+                address: "",
+                phone: "800-433-6466",
+                fax: "503-636-1605",
+                email: "",
+                notes: "From agency claims list"
+            },
+            {
+                name: "Berkshire Hathaway Homestate Co",
+                address: "",
+                phone: "800-356-5750",
+                fax: "415-675-4260",
+                email: "",
+                notes: "From agency claims list"
+            },
+            {
+                name: "Century National",
+                address: "",
+                phone: "800-733-0880",
+                fax: "818-980-4827",
+                email: "",
+                notes: "From agency claims list"
+            },
+            {
+                name: "Crusader/Unifax",
+                address: "",
+                phone: "800-669-9800",
+                fax: "",
+                email: "",
+                notes: "From agency claims list"
+            },
+            {
+                name: "Crouse and Associates",
+                address: "",
+                phone: "800-558-1606",
+                fax: "",
+                email: "",
+                notes: "From agency claims list"
+            },
+            {
+                name: "Financial Pacific",
+                address: "",
+                phone: "800-343-9131",
+                fax: "",
+                email: "",
+                notes: "From agency claims list"
+            },
+            {
+                name: "Great American",
+                address: "",
+                phone: "800-643-7882",
+                fax: "",
+                email: "",
+                notes: "Extension #6, CARGO ONLY: 800-584-0835"
+            },
+            {
+                name: "Lancer",
+                address: "",
+                phone: "800-432-6608",
+                fax: "",
+                email: "",
+                notes: "From agency claims list"
+            },
+            {
+                name: "Maxum",
+                address: "",
+                phone: "800-598-6324",
+                fax: "",
+                email: "",
+                notes: "From agency claims list"
+            },
+            {
+                name: "National Continental",
+                address: "",
+                phone: "800-678-2624",
+                fax: "",
+                email: "",
+                notes: "From agency claims list"
+            },
+            {
+                name: "New Hampshire",
+                address: "",
+                phone: "866-975-2247",
+                fax: "",
+                email: "",
+                notes: "From agency claims list"
+            },
+            {
+                name: "Pacific Gateway",
+                address: "",
+                phone: "800-356-5750",
+                fax: "661-257-5988",
+                email: "",
+                notes: "From agency claims list"
+            },
+            {
+                name: "Pacific Western",
+                address: "",
+                phone: "800-432-0525",
+                fax: "206-783-1625",
+                email: "",
+                notes: "From agency claims list"
+            },
+            {
+                name: "Sagamore",
+                address: "",
+                phone: "800-224-1221",
+                fax: "",
+                email: "",
+                notes: "From agency claims list"
+            },
+            {
+                name: "Sentry",
+                address: "",
+                phone: "800-473-6879",
+                fax: "715-346-8913",
+                email: "",
+                notes: "From agency claims list"
+            },
+            {
+                name: "State Fund",
+                address: "",
+                phone: "888-222-3211",
+                fax: "",
+                email: "",
+                notes: "From agency claims list"
+            },
+            {
+                name: "Stratford/Schuberg",
+                address: "",
+                phone: "201-847-8600",
+                fax: "201-847-1780",
+                email: "",
+                notes: "From agency claims list"
+            },
+            {
+                name: "Tower",
+                address: "",
+                phone: "866-272-9267",
+                fax: "877-207-3961",
+                email: "",
+                notes: "From agency claims list"
+            },
+            {
+                name: "Trinity UW",
+                address: "",
+                phone: "866-391-9675",
+                fax: "973-404-9002",
+                email: "",
+                notes: "From agency claims list"
+            },
+            {
+                name: "Victoria/Titan",
+                address: "",
+                phone: "800-926-3168",
+                fax: "",
+                email: "",
+                notes: "From agency claims list"
             },
             {
                 name: "Acadia Insurance Company",
@@ -776,6 +1064,10 @@
 
         // Initialize the application
         document.addEventListener('DOMContentLoaded', function() {
+            // Debug: Log database size
+            console.log('Carrier database loaded:', carriersDatabase.length, 'carriers');
+            
+            // Force database update
             updateDashboard();
             addCarrierSection(); // Add initial carrier section
             loadStoredDatabase(); // Load any stored database updates
@@ -798,6 +1090,16 @@
             
             // Set current auto-update interval
             document.getElementById('autoUpdateInterval').value = AUTO_UPDATE_CONFIG.interval;
+            
+            // Test Progressive search
+            setTimeout(() => {
+                const progressiveTest = carriersDatabase.find(c => c.name.toLowerCase().includes('progressive'));
+                if (progressiveTest) {
+                    console.log('✅ Progressive found in database:', progressiveTest.name);
+                } else {
+                    console.log('❌ Progressive not found in database');
+                }
+            }, 100);
         });
 
         function addCarrierSection() {
@@ -866,29 +1168,46 @@
         function searchCarriers(carrierId) {
             const input = document.getElementById(`carrierName-${carrierId}`);
             const dropdown = document.getElementById(`dropdown-${carrierId}`);
-            const searchTerm = input.value.toLowerCase();
+            const searchTerm = input.value.toLowerCase().trim();
             
-            if (searchTerm.length < 2) {
+            // Clear dropdown if search term is too short
+            if (searchTerm.length < 1) {
                 dropdown.style.display = 'none';
                 return;
             }
             
+            // Search for matches in carrier database
             const matches = carriersDatabase.filter(carrier => 
                 carrier.name.toLowerCase().includes(searchTerm)
             );
             
+            // Show dropdown if matches found
             if (matches.length > 0) {
                 dropdown.innerHTML = '';
-                matches.forEach(carrier => {
+                
+                // Limit to top 10 matches for performance
+                matches.slice(0, 10).forEach(carrier => {
                     const option = document.createElement('div');
                     option.className = 'carrier-option';
-                    option.textContent = carrier.name;
+                    option.innerHTML = `
+                        <strong>${carrier.name}</strong>
+                        ${carrier.phone ? `<br><small>📞 ${carrier.phone}</small>` : ''}
+                        ${carrier.email ? `<br><small>📧 ${carrier.email}</small>` : ''}
+                    `;
                     option.onclick = () => selectCarrier(carrierId, carrier);
                     dropdown.appendChild(option);
                 });
+                
                 dropdown.style.display = 'block';
             } else {
-                dropdown.style.display = 'none';
+                // Show "not found" option
+                dropdown.innerHTML = `
+                    <div class="carrier-option" style="font-style: italic; color: #666;">
+                        No matches found for "${input.value}"<br>
+                        <small>Click "Add Carrier to Database" below to add this carrier</small>
+                    </div>
+                `;
+                dropdown.style.display = 'block';
             }
         }
 
@@ -898,6 +1217,17 @@
             
             input.value = carrier.name;
             dropdown.style.display = 'none';
+            
+            // Show a brief success message with carrier info
+            if (carrier.phone || carrier.email) {
+                const infoMessage = [];
+                if (carrier.phone) infoMessage.push(`📞 ${carrier.phone}`);
+                if (carrier.email) infoMessage.push(`📧 ${carrier.email}`);
+                
+                showMessage(`Selected: ${carrier.name} - ${infoMessage.join(' • ')}`, 'success');
+            } else {
+                showMessage(`Selected: ${carrier.name}`, 'success');
+            }
         }
 
         function generateLetters(event) {
@@ -1194,9 +1524,14 @@ Title: Owner`;
         }
 
         function updateDashboard() {
-            document.getElementById('totalCarriers').textContent = carriersDatabase.length;
+            // Force refresh of carrier count
+            const carrierCount = carriersDatabase.length;
+            document.getElementById('totalCarriers').textContent = carrierCount;
             document.getElementById('totalRequests').textContent = generatedRequests;
             document.getElementById('averageProcessTime').textContent = '2.5s';
+            
+            // Debug log
+            console.log('Dashboard updated - Carriers:', carrierCount);
             
             // Update last update time
             const lastUpdate = AUTO_UPDATE_CONFIG.lastUpdate;
